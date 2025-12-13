@@ -1,0 +1,20 @@
+# 由于项目大量使用 luisaCompute 的函数, 所以允许using namespace
+
+Checks: >
+    -*,
+    abseil-*,
+    bugprone-*,
+    google-*,
+    misc-*,
+    modernize-*,
+    performance-*,
+    portability-*,
+    readability-*,
+    -google-build-using-namespace,
+    -google-global-names-in-headers,
+    -readability-uppercase-literal-suffix,
+    -readability-magic-numbers,
+    -readability-math-missing-parentheses,
+    -modernize-use-trailing-return-type,
+    -misc-non-private-member-variables-in-classes,
+    -misc-use-internal-linkage
