@@ -11,7 +11,7 @@ target("main")
     add_files("src/main.cpp")
     add_packages("luisa-compute")
     set_default()
-    
+
     -- $OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
     -- xmake f -p windows -a x64 -m release --toolchain=clang-cl
 

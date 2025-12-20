@@ -7,7 +7,7 @@
     "clangd.arguments": [
         "--compile-commands-dir=${workspaceFolder}/.vscode",
         // "--completion-parse=auto",
-        "--completion-style=detailed",  // 代码补全的时候完全显示函数的参数类型
+        "--completion-style=bundled",
         // "--query-driver=g++",
         "--enable-config",
         "--fallback-style=Google",
@@ -18,8 +18,7 @@
         // "--pch-storage=memory",
         // "--pretty",
         "-j=4",
-        // "-std=c++11"
-        "--experimental-modules-support",
+        // "--experimental-modules-support",
     ],
     "clangd.checkUpdates": false, // 自动检测 clangd 更新
     "clangd.detectExtensionConflicts": true, // 当其它拓展与 clangd 冲突时警告并建议禁用
@@ -28,22 +27,10 @@
         "fstream": "cpp"
     },
     "files.encoding": "utf8",
-    "clang-tidy.executable": "D:\\Users\\WIN10\\Documents\\clang+llvm-20.1.0-x86_64-pc-windows-msvc\\bin\\clang-tidy.exe", // The path to the clang-tidy executable
-    "clang-tidy.checks": [], // List of checks to enable or disable
-    // "clang-tidy.compilerArgs": "...", // List of arguments to append to the compiler command line
-    // "clang-tidy.compilerArgsBefore": "...", // List of arguments to prepend to the compiler command line
-    // "clang-tidy.lintOnSave": "...", // Whether or not to lint files when they are saved
-    // "clang-tidy.buildPath": "...", // Path to the build folder. Equivalent to clang-tidy -p /path
-    // "clang-tidy.fixOnSave": "...", // Whether or not to fix files when they are saved
-    // "clang-tidy.blacklist": "...", // A list of regular expressions matching files you don't want to lint
-    "C_Cpp.codeAnalysis.runAutomatically": false,
-    "C_Cpp.intelliSenseEngine": "Disabled",
-    "C_Cpp.formatting": "Disabled",
-    "C_Cpp.autoAddFileAssociations": false,
-    "C_Cpp.autocompleteAddParentheses": false,
-    "C_Cpp.autocomplete": "Disabled",
-    "C_Cpp.errorSquiggles": "Disabled",
+    "files.trimTrailingWhitespace": true,
+
     "xmake.debugConfigType": "codelldb",
+
     "python-envs.defaultEnvManager": "ms-python.python:conda",
     "python-envs.defaultPackageManager": "ms-python.python:conda",
     "python-envs.pythonProjects": [],

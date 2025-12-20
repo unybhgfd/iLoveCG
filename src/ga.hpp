@@ -14,7 +14,7 @@
 using namespace luisa;
 using namespace luisa::compute;
 
-
+namespace {
 constexpr size_t log2(size_t n) {
     if (n == 0) { return 0; }
     size_t log = 0;
@@ -27,6 +27,7 @@ concept ga_concept = requires() {
     requires NBase <= sizeof(size_t) * 8;
     requires std::is_floating_point_v<T>;
 };
+}  // namespace
 
 template <
     typename T,                      // 系数的类型
@@ -129,13 +130,13 @@ private:
     }
 
     static this_type pseudo_scalar_inverse() {
-        static const this_type inverse = []() {
+        static const this_type Inverse = []() {
             this_type result;
             result.data[BasesCnt-1] = 1;
             return result;
         }().inverse();
 
-        return inverse;
+        return Inverse;
     }
 
 public:
@@ -431,9 +432,9 @@ namespace vga6 {
         ga_type bivector = val.grade_projection(2);
 
         // 计算二重向量的模长平方
-        const double B2_norm = bivector.norm_squared();
+        const double b2_norm = bivector.norm_squared();
 
-        if (B2_norm > 0) {
+        if (b2_norm > 0) {
             // 正常旋转（欧几里得空间）
             const double theta = 2.0 * std::acos(std::clamp(scalar, -1., 1.));
             const double scale = theta / std::sin(theta / 2.0);
@@ -494,17 +495,17 @@ namespace vga6 {
         // slerp(R0, R1, t) = R0 * exp(t * log(R0^{-1} * R1))
 
         // 单位旋量
-        static const ga_type identity_rotor{1.0};
+        static const ga_type IdentityRotor{1.0};
 
         // 计算相对旋转：R_rel = rotor0^{-1} * rotor
         // 这里假设从单位旋量插值到目标旋量
-        ga_type R_rel = rotor;  // identity_rotor.inverse() * rotor = rotor
+        ga_type r_rel = rotor;  // identity_rotor.inverse() * rotor = rotor
 
         // 计算相对旋转的对数
-        ga_type log_R_rel = _vga_log(R_rel);
+        ga_type log_r_rel = _vga_log(r_rel);
 
         // 插值：exp(t * log_R_rel)
-        ga_type interpolated = (log_R_rel * times).exp();
+        ga_type interpolated = (log_r_rel * times).exp();
 
         // 归一化结果
         return interpolated * (1. / interpolated.norm());
@@ -545,7 +546,7 @@ namespace vga6 {
         );
     }
 
-    ga_type make_ga_point(std::array<double, 6> pos) {
+    inline ga_type make_ga_point(std::array<double, 6> pos) {
         ga_type result;
         result.data[0b000001] = pos[0];
         result.data[0b000010] = pos[1];

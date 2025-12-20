@@ -2,10 +2,7 @@
 
 #include <luisa/core/basic_types.h>
 
-namespace spectrum {
-constexpr float wavelength_min = 360; // 可见光范围下限
-constexpr float wavelength_max = 830; // 可见光范围上限
-
+namespace spectra {
 // 色匹配函数, 2度视场(CIE 1931 colour-matching functions, 2 degree observer)
 // from https://cie.co.at/data-tables
 const inline std::pair<int, luisa::float3> color_matching_function_2deg[]{
@@ -484,6 +481,7 @@ const inline std::pair<int, luisa::float3> color_matching_function_2deg[]{
 
 // D65光源的光谱分布函数(CIE standard illuminant D65)
 // from https://cie.co.at/data-tables
+// NOTE: 波长为300-830
 const inline std::pair<int, float> d65_illuminant[]{
     std::pair{300, float{0.0341}},
     std::pair{301, float{0.36014}},
@@ -1116,5 +1114,4 @@ const inline std::pair<int, float> wavelength_to_phase[]{
     std::pair{825, float{-3.322621191e-04f}},
     std::pair{830, float{0.000000000e+00f}},
 };
-
-}// namespace spectrum
+}// namespace spectra
