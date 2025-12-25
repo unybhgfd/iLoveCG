@@ -1,4 +1,3 @@
-
 talcode所有图片
 https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c662867426015.html?dirName=4841054529a9fe3063a19ef961143be9.e4d0_1764769172373
 
@@ -8,31 +7,18 @@ https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c66286742
 字符oj
 https://static0.xesimg.com/programme/python_assets/15f8ead5171faf19752a179d9d54c445.jpeg
 https://static0.xesimg.com/programme/python_assets/a1b44fe861658611f5583d627f077f24.jpeg
-zfoj: xu老师
-密码: un..fd
-MySQL 主机
-172.20.0.3
-MySQL 端口
-3306
-MySQL 用户名
-root
-MySQL 密码
-y8wbZu8kQpgC9e9@
-Redis 主机
-172.20.0.2
-Redis 端口
-6379
-Redis 密码
-y8wbZu8kQpgC9e9@
+MySQL 主机   172.20.0.3       // 想啥呢这是内网ip段
+MySQL 端口   3306
+MySQL 用户名 root
+MySQL 密码   y8wbZu8kQpgC9e9@
+Redis 主机   172.20.0.2
+Redis 端口   6379
+Redis 密码   y8wbZu8kQpgC9e9@
 
-NEO
-https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c662867426015.html?dirName=841de09e67618a382451061c0d078575.b275_1761393135704
-LS工程
-https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c662867426015.html?dirName=d4b9350ae1f014392d311b232cf9dcb7.4c4c_1761396520885
-四周年大电影 无法歌唱的未来
+pjsk四周年 - 无法歌唱的未来
 https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c662867426015.html?dirName=3249af211967f32da635f4642e826ed8.ca4d_1763124514848
 
-https://chat.deepseek.com/share/93le1jrqe8t82oy58m
+tar.xz多线程压缩: tar -cvf - my_folder/ | xz -T 0 -c > my_folder.tar.xz
 
 
 
@@ -47,7 +33,26 @@ https://chat.deepseek.com/share/93le1jrqe8t82oy58m
 
 
 
-yeha
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######## 你师傅我内容 ########
+
+各种杂图
+https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c662867426015.html?dirName=cc4a76477d6cdcbd3aac18dfe9128d0c.c6fb_1764772024125
+
+yeha写真
 3_图_Pure Media Yeha
 https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c662867426015.html?dirName=5434ec11572952bb1576c73b3a782e32.5240_1762950748225
 
@@ -76,6 +81,6 @@ https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c66286742
 https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c662867426015.html?dirName=fd5e28014ec80ee47299d817aaf3de3f.c525_1763387860161
 
 
-两个猫娘视频
+猫娘左癌视频
 三-动画_ゆらがわもふぃのファンクラブ (ゆらがわもふぃ) 视频 25.8 合集
 https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c662867426015.html?dirName=5cfcda3493e8b9284268b0fb51cda842.e931_1763387913155

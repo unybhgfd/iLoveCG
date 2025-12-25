@@ -112,6 +112,9 @@ private:
         if (basis_index == 0) {
             return ""; // 标量部分
         }
+        if (basis_index == BasesCnt-1) {
+            return "I"; // 伪标量
+        }
 
         std::string result = "e";
         result += "_{";
