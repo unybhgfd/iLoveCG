@@ -1,6 +1,5 @@
 #include <luisa/luisa-compute.h>
 #include <stb/stb_image_write.h>
-#include <format>
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "common/tiny_obj_loader.h"
 // #include "complex.hpp"
