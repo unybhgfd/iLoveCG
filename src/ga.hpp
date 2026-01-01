@@ -78,25 +78,25 @@ private:
     }
 
 public:
-    static constexpr size_t BasesCnt = 1 << NBase /* 实数1这里也视为一个基 */;
+    static constexpr size_t kBasesCnt = 1 << NBase /* 实数1这里也视为一个基 */;
     using this_type = GeoAlg<T, NBase, BaseSquares>;
 
     /* data数组的第i项代表基i的系数
      * 若i除以(2的n次方)的余数为1则表示数组索引为n的基在多项式this的当前项中
      * i为0代表标量部分
      */
-    std::array<T, BasesCnt> data{0.};
+    std::array<T, kBasesCnt> data{0.};
 
     /* MulTable结构：mult_table[a][b] = {sign, base}
      * 其中sign是积的符号(-1, 0, 1中的一个), base是结果的基(data数组的索引)
      */
     inline const static
-    std::array<std::array<std::pair<T, size_t>, BasesCnt>, BasesCnt>
-    MulTable = [] {
-        std::array<std::array<std::pair<T, size_t>, BasesCnt>, BasesCnt> table{};
+    std::array<std::array<std::pair<T, size_t>, kBasesCnt>, kBasesCnt>
+    kMulTable = [] {
+        std::array<std::array<std::pair<T, size_t>, kBasesCnt>, kBasesCnt> table{};
 
-        for (size_t idx_a = 0; idx_a < BasesCnt; ++idx_a) {
-            for (size_t idx_b = 0; idx_b < BasesCnt; ++idx_b) {
+        for (size_t idx_a = 0; idx_a < kBasesCnt; ++idx_a) {
+            for (size_t idx_b = 0; idx_b < kBasesCnt; ++idx_b) {
                 table[idx_a][idx_b] = get_mul_table(idx_a, idx_b);
             }
         }
@@ -105,14 +105,14 @@ public:
     }();
 
     // 伪标量的平方
-    constexpr static T PseudoscalarSquare = get_mul_table(BasesCnt-1, BasesCnt-1).first;
+    constexpr static T kPseudoscalarSquare = get_mul_table(kBasesCnt-1, kBasesCnt-1).first;
 
 private:
     static std::string get_basis_name(size_t basis_index) {
         if (basis_index == 0) {
             return ""; // 标量部分
         }
-        if (basis_index == BasesCnt-1) {
+        if (basis_index == kBasesCnt-1) {
             return "I"; // 伪标量
         }
 
@@ -133,13 +133,13 @@ private:
     }
 
     static this_type pseudo_scalar_inverse() {
-        static const this_type Inverse = []() {
+        static const this_type kInverse = []() {
             this_type result;
-            result.data[BasesCnt-1] = 1;
+            result.data[kBasesCnt-1] = 1;
             return result;
         }().inverse();
 
-        return Inverse;
+        return kInverse;
     }
 
 public:
@@ -153,7 +153,7 @@ public:
     // 加法
     this_type operator+(const this_type& other) const {
         this_type result;
-        for (size_t i = 0; i < BasesCnt; ++i) {
+        for (size_t i = 0; i < kBasesCnt; ++i) {
             result.data[i] = data[i] + other.data[i];
         }
         return result;
@@ -162,7 +162,7 @@ public:
     // 取负
     this_type operator-() const {
         this_type result;
-        for (size_t i = 0; i < BasesCnt; ++i) {
+        for (size_t i = 0; i < kBasesCnt; ++i) {
             result.data[i] = -data[i];
         }
         return result;
@@ -176,11 +176,11 @@ public:
     // 几何积
     [[nodiscard]] this_type operator*(const this_type& other) const {
         this_type result;
-        for (size_t idx_a = 0; idx_a < BasesCnt; ++idx_a) {
+        for (size_t idx_a = 0; idx_a < kBasesCnt; ++idx_a) {
             if (data[idx_a] == 0) { continue;}  // 0乘任何数都是0, 跳过
-            for (size_t idx_b = 0; idx_b < BasesCnt; ++idx_b) {
+            for (size_t idx_b = 0; idx_b < kBasesCnt; ++idx_b) {
                 if (other.data[idx_b] == 0) { continue; }  // 同上
-                const std::pair<T, size_t>& product = MulTable[idx_a][idx_b];
+                const std::pair<T, size_t>& product = kMulTable[idx_a][idx_b];
                 T sign = product.first;
 
                 result.data[product.second] += sign * data[idx_a] * other.data[idx_b];
@@ -192,7 +192,7 @@ public:
     // 乘以系数
     [[nodiscard]] this_type operator*(T scalar) const {
         this_type result;
-        for (size_t i = 0; i < BasesCnt; ++i) {
+        for (size_t i = 0; i < kBasesCnt; ++i) {
             result.data[i] = data[i] * scalar;
         }
         return result;
@@ -208,7 +208,7 @@ public:
         bool first_term = true;
         bool all_zero = true;
 
-        for (size_t i = 0; i < BasesCnt; ++i) {
+        for (size_t i = 0; i < kBasesCnt; ++i) {
             if (std::abs(obj.data[i]) > 1e-10) { // 非0
                 all_zero = false;
 
@@ -250,7 +250,7 @@ public:
     // grade projection运算符. <A>_k 是提取A的k-向量部分
     [[nodiscard]] this_type grade_projection(size_t grade) const {
         this_type result;
-        for (size_t i = 0; i < BasesCnt; ++i) {
+        for (size_t i = 0; i < kBasesCnt; ++i) {
             if (std::popcount(i) == grade) {
                 result.data[i] = data[i];
             } else {
@@ -265,7 +265,7 @@ public:
     [[nodiscard]] this_type reverse() const {
         this_type result;
 
-        for (size_t i = 0; i < BasesCnt; ++i) {
+        for (size_t i = 0; i < kBasesCnt; ++i) {
             if (data[i] == 0) { continue; }
 
             // 计算阶数grade（二进制表示中1的个数）
@@ -302,7 +302,7 @@ public:
     [[nodiscard]] this_type grade_involution() const {
         this_type result;
 
-        for (size_t i = 0; i < BasesCnt; ++i) {
+        for (size_t i = 0; i < kBasesCnt; ++i) {
             if (data[i] == 0) { continue; }
 
             // 计算阶数k
@@ -325,7 +325,7 @@ public:
         this_type result;
 
         T inv_n2 = T(1) / norm_squared;
-        for (size_t i = 0; i < BasesCnt; ++i) {
+        for (size_t i = 0; i < kBasesCnt; ++i) {
             result.data[i] = rev.data[i] * inv_n2;
         }
 
@@ -357,17 +357,17 @@ public:
     [[nodiscard]] this_type dot(const this_type& other) const {
         this_type result{};
 
-        for (size_t idx_a = 0; idx_a < BasesCnt; ++idx_a) {
+        for (size_t idx_a = 0; idx_a < kBasesCnt; ++idx_a) {
             T coeff_a = data[idx_a];
             if (coeff_a == T(0)) { continue; }
             auto grade_a = std::popcount(idx_a);
 
-            for (size_t idx_b = 0; idx_b < BasesCnt; ++idx_b) {
+            for (size_t idx_b = 0; idx_b < kBasesCnt; ++idx_b) {
                 T coeff_b = other.data[idx_b];
                 if (coeff_b == T(0)) { continue; }
                 auto grade_b = std::popcount(idx_b);
 
-                const std::pair<T, size_t>& product = MulTable[idx_a][idx_b];
+                const std::pair<T, size_t>& product = kMulTable[idx_a][idx_b];
                 size_t result_idx = product.second;
                 size_t result_grade = std::popcount(result_idx);
 
@@ -384,17 +384,17 @@ public:
     [[nodiscard]] this_type wedge(const this_type& other) const {
         this_type result{};
 
-        for (size_t idx_a = 0; idx_a < BasesCnt; ++idx_a) {
+        for (size_t idx_a = 0; idx_a < kBasesCnt; ++idx_a) {
             T coeff_a = data[idx_a];
             if (coeff_a == T(0)) { continue; }
             auto grade_a = std::popcount(idx_a);
 
-            for (size_t idx_b = 0; idx_b < BasesCnt; ++idx_b) {
+            for (size_t idx_b = 0; idx_b < kBasesCnt; ++idx_b) {
                 T coeff_b = other.data[idx_b];
                 if (coeff_b == T(0)) { continue; }
                 auto grade_b = std::popcount(idx_b);
 
-                const std::pair<T, size_t>& product = MulTable[idx_a][idx_b];
+                const std::pair<T, size_t>& product = kMulTable[idx_a][idx_b];
                 size_t result_idx = product.second;
                 size_t result_grade = std::popcount(result_idx);
 
@@ -409,7 +409,7 @@ public:
 
     // 对偶. dual A = A dot I^{-1}
     [[nodiscard]] this_type dual() const {
-        static_assert(PseudoscalarSquare != 0., "伪标量平方为0时dual函数无定义");
+        static_assert(kPseudoscalarSquare != 0., "伪标量平方为0时dual函数无定义");
         return this->dot(pseudo_scalar_inverse());
     }
 
@@ -465,7 +465,7 @@ namespace vga6 {
         // 在6维空间中，有C(6,2)=15个基二重向量
         // 我们生成15个随机系数，然后归一化
         double norm_sq = 0.0;
-        for (size_t i = 0; i < ga_type::BasesCnt; ++i) {
+        for (size_t i = 0; i < ga_type::kBasesCnt; ++i) {
             if (std::popcount(i) == 2) {  // 只处理二重向量基
                 double coeff = dist(gen);
                 bivector.data[i] = coeff;
@@ -476,7 +476,7 @@ namespace vga6 {
         // 归一化二重向量
         if (norm_sq > 1e-10) {
             double inv_norm = 1.0 / std::sqrt(norm_sq);
-            for (size_t i = 0; i < ga_type::BasesCnt; ++i) {
+            for (size_t i = 0; i < ga_type::kBasesCnt; ++i) {
                 if (std::popcount(i) == 2) {
                     bivector.data[i] *= inv_norm;
                 }
@@ -498,7 +498,7 @@ namespace vga6 {
         // slerp(R0, R1, t) = R0 * exp(t * log(R0^{-1} * R1))
 
         // 单位旋量
-        static const ga_type IdentityRotor{1.0};
+        static const ga_type kIdentityRotor{1.0};
 
         // 计算相对旋转：R_rel = rotor0^{-1} * rotor
         // 这里假设从单位旋量插值到目标旋量

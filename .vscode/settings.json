@@ -4,6 +4,7 @@
     "catppuccin-icons.monochrome": false,  // Set to `true` to only use the `text` fill color for all icons.
     "editor.bracketPairColorization.enabled": true,
     "editor.guides.bracketPairs": "active",
+    "editor.rulers": [120],
     "clangd.arguments": [
         "--compile-commands-dir=${workspaceFolder}/.vscode",
         // "--completion-parse=auto",
@@ -20,9 +21,6 @@
         "-j=4",
         "--experimental-modules-support",
     ],
-    "clangd.checkUpdates": false, // 自动检测 clangd 更新
-    "clangd.detectExtensionConflicts": true, // 当其它拓展与 clangd 冲突时警告并建议禁用
-    "clangd.path": "D:\\Users\\WIN10\\Documents\\clang+llvm-20.1.0-x86_64-pc-windows-msvc\\bin\\clangd.exe",
     "files.associations": {
         "fstream": "cpp"
     },
@@ -36,6 +34,7 @@
     "python-envs.pythonProjects": [],
     "cSpell.words": [
         "aberth",
+        "happly",
         "littlewood",
         "Lyapunov"
     ],

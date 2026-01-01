@@ -1,4 +1,3 @@
-#include <filesystem>
 #include <iostream>
 #include <luisa/luisa-compute.h>
 #include <random>
@@ -98,8 +97,8 @@ int main(int argc, char *argv[]) {
 
     Kernel2D main_kernel = [&](
         ImageFloat image,
-        const Float6x6& transform_mat,
-        const Float6& translate_vec,
+        Float6x6 transform_mat,
+        Float6 translate_vec,
         UInt max_iterations
     ) {
         /*
@@ -153,9 +152,9 @@ int main(int argc, char *argv[]) {
     std::uniform_real_distribution<float> distribution(-1, .1);
 
     // 初始设置
-    constexpr size_t kImageWidth =  1024;
-    constexpr size_t kImageHeight = 1024;
-    constexpr uint kRenderTimes = 1000;
+    constexpr size_t image_width =  1024;
+    constexpr size_t image_height = 1024;
+    constexpr uint render_times = 1000;
     const filesystem::path file_save_path = filesystem::current_path() / "output";
     const vga6::ga_type rotor_start = vga6::random_rotor();
     const vga6::ga_type rotor_end = vga6::random_rotor();
@@ -181,12 +180,12 @@ int main(int argc, char *argv[]) {
     filesystem::create_directory(file_save_path);
 
     // 渲染循环
-    for (uint render_cnt = 0; render_cnt < kRenderTimes; ++render_cnt) {
+    for (uint render_cnt = 0; render_cnt < render_times; ++render_cnt) {
         uint render_index = render_cnt;
-        if (render_index == 0) { render_index = kRenderTimes; }
+        if (render_index == 0) { render_index = render_times; }
 
         #define R distribution(engine)
-        float render_t = static_cast<float>(render_index) / (kRenderTimes - 1);
+        float render_t = static_cast<float>(render_index) / (render_times - 1);
         auto current_rotor = vga6::rotor_lerp(rotor_start, rotor_end, render_t);
         float6x6 transform_mat{
             // 将rotor作用于六个基向量
@@ -206,15 +205,15 @@ int main(int argc, char *argv[]) {
         auto mb_z = complex(2, R);
         #undef R
 
-        std::vector<std::byte> pixels{kImageWidth * kImageHeight * 4};
-        Image<float> image = device.create_image<float>(PixelStorage::BYTE4, kImageWidth, kImageHeight);
+        std::vector<std::byte> pixels{image_width * image_height * 4};
+        Image<float> image = device.create_image<float>(PixelStorage::BYTE4, image_width, image_height);
         stream
             << main_shader(
                 image,
                 transform_mat,
                 translate_vec,
                 512
-            ).dispatch(kImageWidth, kImageHeight)
+            ).dispatch(image_width, image_height)
             << image.copy_to(pixels.data())
             << synchronize();
 
@@ -233,7 +232,7 @@ int main(int argc, char *argv[]) {
             (
                 file_save_path / (std::to_string(render_index) + std::string(".png"))
             ).string().data(),
-            kImageWidth, kImageHeight, 4,
+            image_width, image_height, 4,
             pixels.data(), 0
         );
     }
