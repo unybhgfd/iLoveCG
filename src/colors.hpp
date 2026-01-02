@@ -32,7 +32,7 @@ constexpr float3 xyY_to_XYZ(float3 xyy) noexcept {
  计算 **从该颜色空间到CIE-XYZ** 的矩阵
  推导过程: https://chat.deepseek.com/share/3si694s6qqgfnqksx9
  */
-constexpr float3x3 primes_to_matrix_to_xyz(
+constexpr float3x3 primes_white_point_to_matrix_to_xyz(
     const float2& red_xy,   // 三原色中红色在xy色品图中的位置
     const float2& green_xy, // 三原色中绿色在xy色品图中的位置
     const float2& blue_xy,  // 三原色中蓝色在xy色品图中的位置
@@ -83,7 +83,7 @@ constexpr float3x3 primes_to_matrix_to_xyz(
 }  // namespace color
 
 
-//颜色空间
+// 颜色空间
 namespace color {
 constexpr float3x3 kXyzToRec709 = transpose(float3x3{
     { 3.2409699419045213f, -1.5373831775700935f, -0.4986107602930033f},
@@ -104,7 +104,7 @@ constexpr float3 kRec2020WhitePoint = XYZ_to_xyY(kRec2020ToXyz * float3(1));
 // ap0和ap1改成ap zero和ap one防止混淆
 namespace aces {
 // aces白点在xy色品图上坐标. ap0和ap1都是用这个白点
-constexpr float2 kAcesWhitePoint = {0.32168, 0.33767}; // 白点
+constexpr float2 kAcesWhitePoint = {0.32168, 0.33767};
 
 // primes指的是三原色
 
@@ -122,13 +122,13 @@ constexpr std::array<float2, 3> kApOnePrimes = {{
     {0.128, 0.044}
 }};
 
-constexpr float3x3 kApZeroToXyz = primes_to_matrix_to_xyz(
+constexpr float3x3 kApZeroToXyz = primes_white_point_to_matrix_to_xyz(
     kApZeroPrimes[0], kApZeroPrimes[1], kApZeroPrimes[2],
     kAcesWhitePoint
 );
 constexpr float3x3 kXyzToApZero = inverse(kApZeroToXyz);
 
-constexpr float3x3 kApOneToXyz = primes_to_matrix_to_xyz(
+constexpr float3x3 kApOneToXyz = primes_white_point_to_matrix_to_xyz(
     kApOnePrimes[0], kApOnePrimes[1], kApOnePrimes[2],
     kAcesWhitePoint
 );

@@ -21,6 +21,24 @@ https://livefile.xesimg.com/programme/python_assets/74c8c75f1bff72c09e3c66286742
 tar.xz多线程压缩: tar -cvf - my_folder/ | xz -T 0 -c > my_folder.tar.xz
 curl下载文件: curl -C - -O --progress-bar -L https://example.com/file.bin
 
+luisa提示词:
+已定义float2, float3, float3x3等类型（没有非方阵矩阵定义），使用方法与glsl中的矩阵和向量类似，不过构造函数（如constexpr Matrix(const VectorType c0, const VectorType c1, const VectorType c2) noexcept）和operator[]是列主序储存，使用需要注意。已有inverse、transpose、determinant等函数，使用方法类似glsl。make_xxx方法与对应的xxx类构造函数相同（如make_float3x3(...)与float3x3{...}作用相同）
+
+
+*** <= >= <=> <> ------| Maple
+*** /* */ /**/ ### ----| Mono
+=== ::: ;;; /// >>> ---| NF
+!! \\ == ~~ __ <<< ----| CN
+~- -~ := =: #{ #[]} ---|
+<!-- <-- <- -> --> ----|
+<== => ==> >- -< +++ --|
+<| |> <|> -| |- :< >: -|
+[INFO][DEBUG][FATAL] --|
+[ERROR] [WARN] --------|
+[TODO] 中文 对齐 ------|
+中文对齐中文对齐 ------|
+中文会破坏连写字体 <= <|
+                   <= <|
 
 
 
