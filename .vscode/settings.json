@@ -37,6 +37,7 @@
         "BTDF",
         "happly",
         "littlewood",
-        "Lyapunov"
+        "Lyapunov",
+        "pbrt"
     ],
 }
