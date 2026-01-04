@@ -71,7 +71,7 @@ public:
     }
 
     [[nodiscard]] ParserIterator begin() {
-        return ParserIterator(this);
+        return ++ParserIterator(this);
     }
 
     [[nodiscard]] ParserIterator end() {
@@ -87,6 +87,7 @@ public:
     }
 
     void parse_next() {
+        if (is_parse_end_) { return; }
         std::string result;
         char chr;
         while (true) {
@@ -96,7 +97,7 @@ public:
             }
             if (chr == std::char_traits<char>::eof()) {
                 this->is_parse_end_ = true;
-                this->result_item_ = std::nullopt;
+                this->result_item_ = Item(result);
                 return;
             }
             result += chr;
@@ -110,11 +111,10 @@ Item ParserIterator::operator*() {
 }
 
 ParserIterator& ParserIterator::operator++() {
-    if (!parser_->has_reached_end()) {
+    if (parser_->has_reached_end()) {
+        is_parse_end_ = true;
+    } else {
         parser_->parse_next();
-        if (parser_->has_reached_end()) {
-            is_parse_end_ = true;
-        }
     }
     return *this;
 }
