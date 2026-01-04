@@ -1,43 +1,28 @@
-#include <cstdint>
 #include <iostream>
 #include <fstream>
 #include <optional>
 #include <string>
 #include <utility>
 
-namespace pbrt_parser {
-enum struct DecorateChar : uint8_t {
-    kNoDecoration,
-    kRoundBracket,  // ()
-    kSquareBracket, // []
-    kBraces,        // {}
-    kSingleQuote,   // ''
-    kDoubleQuote    // ""
-};
+namespace parser {
+namespace parser_base {
+// template <typename ItemType>
+// concept typename = std::is_copy_assignable_v<ItemType>;
 
-namespace base_file_parser {
-template<typename T>
-concept ifstream_constructable = requires (T val) {
-    std::ifstream(val);
-};
-
+template <typename Derived, typename ItemType>
 class ParserIterator;
+template <typename Derived, typename ItemType>
 class Parser;
 
-struct Item {
-    std::string data;
-
-    Item(std::string data) :data(std::move(data)) {}
-};
-
+template <typename Derived, typename ItemType>
 class ParserIterator {
 private:
-    Parser* parser_;
+    Parser<Derived, ItemType>* parser_;
     bool is_parse_end_ = false;
 
 public:
     explicit ParserIterator(
-        Parser* parser,
+        Parser<Derived, ItemType>* parser,
         bool is_parse_end = false
     ) : parser_(parser), is_parse_end_(is_parse_end) {}
 
@@ -47,44 +32,76 @@ public:
         return this->parser_ == other.parser_;
     }
 
-    [[nodiscard]] Item operator*();
+    [[nodiscard]] ItemType operator*();
 
     ParserIterator& operator++();
 };
 
+template <typename Derived, typename ItemType>
 class Parser {
+    friend Derived;
+
 private:
-    mutable std::ifstream file_stream_;
-    std::ifstream::pos_type file_size_;
-    std::optional<Item> result_item_;
+    Parser() = default;
+    std::optional<ItemType> result_item_;
     bool is_parse_end_ = false;
 
 public:
-    Parser(const Parser&) = delete;
-    Parser& operator=(const Parser&) = delete;
-
-    template <ifstream_constructable T>
-    explicit Parser(T val) : file_stream_(std::move(val)) {
-        file_stream_.seekg(0, std::ios_base::end);
-        file_size_ = file_stream_.tellg();
-        file_stream_.seekg(0, std::ios_base::beg);
-    }
-
-    [[nodiscard]] ParserIterator begin() {
+    [[nodiscard]] ParserIterator<Derived, ItemType> begin() {
         return ++ParserIterator(this);
     }
 
-    [[nodiscard]] ParserIterator end() {
+    [[nodiscard]] ParserIterator<Derived, ItemType> end() {
         return ParserIterator(this, true);
     }
 
-    [[nodiscard]] std::optional<Item>& get_result() {
+    [[nodiscard]] std::optional<ItemType>& get_result() {
         return result_item_;
     }
 
     [[nodiscard]] bool has_reached_end() const {
         return is_parse_end_;
     }
+};
+
+template <typename Derived, typename ItemType>
+ItemType ParserIterator<Derived, ItemType>::operator*() {
+    return parser_->get_result().value();
+}
+
+template <typename Derived, typename ItemType>
+ParserIterator<Derived, ItemType>& ParserIterator<Derived, ItemType>::operator++() {
+    if (parser_->has_reached_end()) {
+        is_parse_end_ = true;
+    } else {
+        static_cast<Derived*>(parser_)->parse_next();
+    }
+    return *this;
+}
+
+}  // namespace parser_base
+
+
+namespace test {
+template<typename T>
+concept ifstream_constructable = requires (T val) {
+    std::ifstream(val);
+};
+
+struct Item {
+    std::string data;
+
+    explicit Item(std::string data) :data(std::move(data)) {}
+};
+
+class Parser : public parser_base::Parser<Parser, Item> {
+private:
+    mutable std::ifstream file_stream_;
+    std::ifstream::pos_type file_size_;
+
+public:
+    Parser(const Parser&) = delete;
+    Parser& operator=(const Parser&) = delete;
 
     void parse_next() {
         if (is_parse_end_) { return; }
@@ -104,20 +121,14 @@ public:
         }
         this->result_item_ = Item(result);
     }
-};
 
-Item ParserIterator::operator*() {
-    return parser_->get_result().value_or(Item("ERR"));
-}
-
-ParserIterator& ParserIterator::operator++() {
-    if (parser_->has_reached_end()) {
-        is_parse_end_ = true;
-    } else {
-        parser_->parse_next();
+    template <ifstream_constructable T>
+    explicit Parser(T val) : parser_base::Parser<Parser, Item>() {
+        file_stream_ = std::ifstream(std::move(val));
+        file_stream_.seekg(0, std::ios_base::end);
+        file_size_ = file_stream_.tellg();
+        file_stream_.seekg(0, std::ios_base::beg);
     }
-    return *this;
-}
-
-}  // namespace base_file_parser
-}  // namespace pbrt_parser
+};
+}  // namespace test
+}  // namespace parser
