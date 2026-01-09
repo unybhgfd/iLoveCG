@@ -136,7 +136,21 @@ constexpr float3x3 kXyzToApOne = inverse(kApOneToXyz);
 }  // namespace aces
 }  // namespace color
 
-// output device transforms
-namespace color::aces::odt {
 
-}
+// 色貌模型
+namespace color::appearance {
+/*
+CAM16
+https://www.researchgate.net/publication/318152296_Comprehensive_color_solutions_CAM16_CAT16_and_CAM16-UCS
+https://www.researchgate.net/publication/220865484_Usage_guidelines_for_CIECAM97s
+https://doi.org/10.1002/col.22131
+https://observablehq.com/@jrus/cam16
+https://arxiv.org/abs/1802.06067
+
+CAM16 Corrections: Hellwig and Fairchild
+http://markfairchild.org/PDFs/PAP45.pdf
+
+Helmholtz Kohlrausch Effect extension: Hellwig, Stolitzka, and Fairchild
+https://doi.org/10.1002/col.22793
+*/
+}  // namespace color::appearance

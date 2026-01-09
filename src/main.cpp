@@ -21,7 +21,7 @@
 int main() {
     std::filesystem::path file_path;
     std::string file_path_str;
-    std::cout << "输入文本文件路径: ";
+    std::cout << "输入pbrt文件路径: ";
     std::cin >> file_path_str;
     std::cout << "\n";
     try {
@@ -33,15 +33,5 @@ int main() {
     if (!std::filesystem::is_regular_file(file_path)) {
         std::cerr << "输入的路径不是文件: " << file_path_str << "\n";
         return 1;
-    }
-    auto parser = parser::test::Parser(file_path);
-
-    /*
-        for(auto it : obj)
-        等同于
-        for (auto it = obj.begin(); it != obj.end(); ++it)
-    */
-    for (auto item : parser) {
-        std::cout << item.data << "\n";
     }
 }

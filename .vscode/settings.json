@@ -34,8 +34,11 @@
     "python-envs.pythonProjects": [],
     "cSpell.words": [
         "aberth",
+        "BRDF",
+        "BSSRDF",
         "BTDF",
         "happly",
+        "hellwig",
         "littlewood",
         "Lyapunov",
         "pbrt"
