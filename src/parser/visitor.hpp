@@ -1,10 +1,9 @@
 #pragma once
-#include "ast.hpp"
+#include <memory>
+#include "basic.hpp"
 #include "statements.hpp"
 
 namespace parser {
-class ASTVisitor {
-public:
-    virtual void visit(const LookAtStmt& stmt);
+struct ASTVisitor {
 };
 }
